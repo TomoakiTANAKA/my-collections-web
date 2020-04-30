@@ -20,6 +20,13 @@ export default function App() {
             <li>
               <Link to="/about">About</Link>
             </li>
+
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/signup">SignUp</Link>
+            </li>
             <li>
               <Link to="/users">Users</Link>
             </li>
@@ -38,9 +45,16 @@ export default function App() {
           <Route path="/users">
             <Users />
           </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
+          </Route>
           <Route path="/topics">
             <Topics />
           </Route>
+          <Route component={NotFound} />
           <Route path="/">
             <Home />
           </Route>
@@ -48,6 +62,14 @@ export default function App() {
       </div>
     </Router>
   );
+}
+
+function Login() {
+  return <h2>Login</h2>;
+}
+
+function SignUp() {
+  return <h2>SignUp</h2>;
 }
 
 function Home() {
@@ -99,4 +121,25 @@ function Topics() {
 function Topic() {
   let { topicId } = useParams();
   return <h3>Requested topic ID: {topicId}</h3>;
+}
+
+function Status({ code, children }) {
+  return (
+    <Route
+      render={({ staticContext }) => {
+        if (staticContext) staticContext.status = code;
+        return children;
+      }}
+    />
+  );
+}
+
+function NotFound() {
+  return (
+    <Status code={404}>
+      <div>
+        <h1>Sorry, can’t find that.</h1>
+      </div>
+    </Status>
+  );
 }
